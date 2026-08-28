@@ -1,9 +1,10 @@
 import cv2 as cv
 import numpy as np 
 
-
-right_img = cv.imread("Frand0.png",0)
-left_img = cv.imread("Frand1.png",0)
+# change the read img as desired 
+# CHANGE IN BOTH FILES AND DON'T FORGET TO SAVE !!!
+right_img = cv.imread("camera_mapping.py\Frand0.png",0)
+left_img = cv.imread("camera_mapping.py\Frand1.png",0)
 
 
 #creating astereo object with numDisparities which is the max pixel shift between two stereo images
@@ -30,3 +31,58 @@ if k == ord('s'):
     cv.imwrite("Random_objects_disparity_map.png", disparity_colorMap)
 
 cv.destroyAllWindows()
+
+
+
+
+#==========DISPARITY TO DEPTH ESTIMATION==========
+
+
+
+def disparityToDepth (baseline, doffs, focal_length, disparity):
+    if disparity + doffs <= 0:  # division by zero error
+        return None
+
+    depth = (focal_length * baseline) / (disparity + doffs)
+
+    return depth
+
+
+# Pick a pixel
+x = 300
+y = 250
+
+# Get disparity at that pixel
+d = disparity_map[y, x]
+
+# StereoBM stores disparity scaled by 16
+d = d / 16.0
+
+# Camera parameters
+focal_length = 3979.911
+baseline = 193.001
+doffs = 124.343
+Fx = 3979.911
+
+#resizing the horizontal focal length
+focal_length = Fx * (600/2964)
+
+# Calculate depth
+depth = disparityToDepth(
+    baseline,
+    doffs,
+    focal_length,
+    d
+)
+depth_in_meters = depth /1000
+
+print("Pixel:", (x, y))
+print("Disparity:", d)
+
+if depth is not None:
+    print("Estimated depth:", depth, "mm")
+    print("Estimated depth:", depth_in_meters,"m")
+
+else:
+    print("Invalid disparity at this pixel.")
+
