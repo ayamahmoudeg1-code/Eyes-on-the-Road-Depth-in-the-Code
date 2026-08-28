@@ -1,0 +1,38 @@
+Color correction doc.
+Discovering color correction.
+   As it seems from the name of the CV feature, it’s a dedicated process of enhancing images color in terms of brightness, contrast, white balance or exposure, making it more accurate, clearer and true to life as possible that can be later used for AI model training like in Object Detection.
+Possible techniques to color correct images.
+There are a lot of techniques most used are:
+ White balance 
+It is considered the first and most important step when editing images.
+It’s responsible to ensure that white appears white and other colors look accurate under different lightening conditions. 
+ Contrast
+It is responsible for controlling the difference between darkest and brightest areas in the image.
+Color balance
+It’s responsible for adjusting red, green and blue channels for more enhanced image and keeping color tones neutral.
+Applying knowledge to the given image:
+I stuck with White balance to give the img some white light 
+Then, I tried all the methods in the OPENCV underwater guide referenced
+1.	Histogram equalization 
+I was going to use it to enhance the whole img contrast but then I changed to Contrast-Limited Adaptive Histogram Equalization (CLAHE) as it works with LAB channels especially the luminance(brightness) channel and serves the exact purpose I need to my img 
+ The resulting image still had that annoying cyan mask over it
+So I tried :
+ White Balance Correction in LAB Color Space
+Too red even after I played with the A,B shifts it still didn’t satisfy me. Without shit it was basically black and white img
+So I tried 
+Red Channel Restoration
+It was giving better results but the img wasn’t balanced and red was over lapping the whole img
+
+I tried Dehaze as well to the raw img
+ It made the green channel more vibrant but the whole img was contrasted well . I tried it again to the white balanced version and it worked but was browny. 
+
+Finally I sticked with white balance with clahe that gave the most balanced look but not as other underwater img look.
+
+I waiting for the feedback email for more guidance on that topic. 
+ 
+References:
+https://opencv.org/underwater-image-enhancement-using-opencv
+https://www.lizardtech.com/post/opencv-python-tutorial-improving-image-quality-with-enhancement-algorithms
+/
+https://quickframe.com/blog/color-correction
+https://docs.opencv.org/5.0/tutorials/photo/ccm/color_correction_model.html
